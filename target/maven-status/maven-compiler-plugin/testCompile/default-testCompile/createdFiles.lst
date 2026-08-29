@@ -1,0 +1,5 @@
+com\exelynt\booking\service\ResourceServiceTest.class
+com\exelynt\booking\BookingApplicationTests.class
+com\exelynt\booking\service\ReservationSpecificationsTest.class
+com\exelynt\booking\exception\GlobalExceptionHandlerTest.class
+com\exelynt\booking\service\ReservationServiceTest.class
