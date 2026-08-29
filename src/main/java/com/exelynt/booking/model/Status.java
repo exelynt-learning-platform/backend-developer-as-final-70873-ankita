@@ -2,6 +2,6 @@ package com.exelynt.booking.model;
 
 public enum Status {
     PENDING,
-    APPROVED,
+    CONFIRMED,
     CANCELLED
 }

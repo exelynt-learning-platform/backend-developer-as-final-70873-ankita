@@ -49,7 +49,7 @@ public class ReservationController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Reservation> updateReservation(
-            @PathVariable Long id, @RequestBody ReservationUpdateRequest request, Authentication auth) {
+            @PathVariable Long id, @Valid @RequestBody ReservationUpdateRequest request, Authentication auth) {
         return ResponseEntity.ok(reservationService.updateReservation(id, request, auth));
     }
 

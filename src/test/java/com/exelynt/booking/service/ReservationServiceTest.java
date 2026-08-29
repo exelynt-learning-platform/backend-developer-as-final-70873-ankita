@@ -110,11 +110,11 @@ class ReservationServiceTest {
         when(reservationRepository.save(any(Reservation.class))).thenAnswer(inv -> inv.getArgument(0));
 
         ReservationUpdateRequest update = new ReservationUpdateRequest();
-        update.setStatus(Status.APPROVED); // only status supplied; price/startTime/endTime left null
+        update.setStatus(Status.CONFIRMED); // only status supplied; price/startTime/endTime left null
 
         Reservation result = reservationService.updateReservation(100L, update, authAs("owner@test.com", false));
 
-        assertThat(result.getStatus()).isEqualTo(Status.APPROVED);
+        assertThat(result.getStatus()).isEqualTo(Status.CONFIRMED);
         assertThat(result.getPrice()).isEqualTo(new BigDecimal("50.00")); // untouched
     }
 

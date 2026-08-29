@@ -2,6 +2,7 @@ package com.exelynt.booking.service;
 
 import com.exelynt.booking.dto.ReservationRequest;
 import com.exelynt.booking.dto.ReservationUpdateRequest;
+import com.exelynt.booking.exception.BadRequestException;
 import com.exelynt.booking.exception.ResourceNotFoundException;
 import com.exelynt.booking.model.Reservation;
 import com.exelynt.booking.model.Resource;
@@ -19,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Service
 public class ReservationService {
@@ -49,6 +51,8 @@ public class ReservationService {
         reservation.setStatus(request.getStatus() != null ? request.getStatus() : Status.PENDING);
         reservation.setStartTime(request.getStartTime());
         reservation.setEndTime(request.getEndTime());
+
+        validateTimeRange(reservation.getStartTime(), reservation.getEndTime());
 
         return reservationRepository.save(reservation);
     }
@@ -89,7 +93,20 @@ public class ReservationService {
             reservation.setEndTime(request.getEndTime());
         }
 
+        validateTimeRange(reservation.getStartTime(), reservation.getEndTime());
+
         return reservationRepository.save(reservation);
+    }
+
+    /**
+     * Ensures endTime is strictly after startTime whenever both are present.
+     * Either or both may be null (start/end time are optional on the entity),
+     * in which case there is nothing to compare.
+     */
+    private void validateTimeRange(LocalDateTime startTime, LocalDateTime endTime) {
+        if (startTime != null && endTime != null && !endTime.isAfter(startTime)) {
+            throw new BadRequestException("endTime must be after startTime");
+        }
     }
 
     public void deleteReservation(Long id, Authentication auth) {

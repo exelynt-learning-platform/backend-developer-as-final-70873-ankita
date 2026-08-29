@@ -1,19 +1,20 @@
 package com.exelynt.booking.dto;
 
 import com.exelynt.booking.model.Status;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.DecimalMin;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-/**
- * All fields are optional: only the fields the caller actually supplies are
- * applied to the existing reservation. This keeps updates from silently
- * wiping out fields the caller didn't intend to touch.
- */
 public class ReservationUpdateRequest {
 
     private Status status;
+
+    @DecimalMin(value = "0.0", inclusive = false, message = "price must be greater than 0")
+    @Digits(integer = 17, fraction = 2, message = "price must have at most 2 decimal places")
     private BigDecimal price;
+
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
